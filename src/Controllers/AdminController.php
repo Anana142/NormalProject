@@ -9,6 +9,7 @@ use App\Models\ArticlesModel;
 
 class AdminController
 {
+    use Auth;
 
     private \App\View $view;
     private \App\Helper $h;
@@ -19,6 +20,9 @@ class AdminController
         $this->view = $view;
         $this->h = $h;
         $this->model = $model;
+
+
+
     }
 
     public function loginPage(){
@@ -36,22 +40,36 @@ class AdminController
         $login = "admin";
         $password = "12345";
 
-        if (isset($_POST['btn_admin']) && $_POST['login'] == $login && $_POST['password'] == $password){
-            session_start();
+        if(!$this->checkAuth()){
+            if (isset($_POST['btn_admin']) && $_POST['login'] == $login && $_POST['password'] == $password){
 
-            $_SESSION['user']='admin';
-            $_REQUEST['action'] = 'open';
+                $this->signIn('admin', 1);
 
-            return true;
+                return true;
+            }
         }
         return false;
     }
 
     public function logout()
     {
+        $this->signOut();
         $this->h->goUrl("/admin");
     }
 
+    public function registrationPage(){
+        if(!$this->register()){
+
+        }
+        $this->view->registrPageView();
+    }
+    public function register() : bool
+    {
+        if(isset($_POST['btn_registr'])){
+
+        }
+        return true;
+    }
     public function update(){
         if(isset($_POST['id']) && $_POST['id'] != 0){
             $this->editArticle();

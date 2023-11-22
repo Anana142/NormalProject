@@ -36,7 +36,9 @@ class View
         echo $this->twig->render('editArticle.twig', ['article' => $article]);
     }
 
-
+    public function registrPageView(){
+        echo $this->twig->render('register.twig', []);
+    }
 
     public function errorView(){
         echo $this->twig->render('pageError404.html', []);
