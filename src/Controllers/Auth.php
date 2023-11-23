@@ -11,6 +11,7 @@ trait Auth
             return true;
         else
             return false;
+
     }
     public function signIn(string $username, int $id){
         $_SESSION['username'] = $username;

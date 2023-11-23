@@ -4,7 +4,15 @@ use function DI\create;
 use function DI\get;
 use Opis\Database\Database;
 use Opis\Database\Connection;
+
 use  \App\Models\ArticlesModel;
+use  \App\Models\UsersModel;
+
+use \App\View;
+use \App\Helper;
+
+use \App\Controllers\ArticlesController;
+use \App\Controllers\AdminController;
 
 return [
     'Connection'=> create(Connection:: class)->constructor(
@@ -16,10 +24,15 @@ return [
             get('Connection')
     ),
 
+    'UsersModel'=> create(UsersModel::class)->constructor(
+        get('Database'),
+        'users'
+    ),
     'ArticlesModel' => create(ArticlesModel::class) -> constructor(
         get('Database'),
         'articles'
     ),
+
 
     Twig\Loader\FilesystemLoader::class => create(Twig\Loader\FilesystemLoader::class)->constructor(
         'templates'
@@ -29,22 +42,22 @@ return [
         []
     ),
 
-    'View' => create(\App\View::class)->constructor(
+    'View' => create(View::class)->constructor(
         get(Twig\Environment::class)
     ),
 
-    \App\Helper::class => create(\App\Helper::class)->constructor(),
+    Helper::class => create(Helper::class)->constructor(),
 
-    \App\Controllers\ArticlesController::class => create(\App\Controllers\ArticlesController::class)->constructor(
+    ArticlesController::class => create(ArticlesController::class)->constructor(
         get(\App\Helper::class),
         get('View'),
         get('ArticlesModel')
     ),
-
-    \App\Controllers\AdminController::class => create(\App\Controllers\AdminController::class)->constructor(
+    AdminController::class => create(AdminController::class)->constructor(
         get('View'),
         get(\App\Helper::class),
-        get('ArticlesModel')
+        get('ArticlesModel'),
+        get('UsersModel')
     )
     ];
 

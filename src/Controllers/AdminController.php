@@ -13,26 +13,21 @@ class AdminController
 
     private \App\View $view;
     private \App\Helper $h;
-    private \App\Models\ArticlesModel $model;
-    public  function  __construct($view, $h, $model)
+    private \App\Models\ArticlesModel $articlesModel;
+    private \App\Models\UsersModel $userModel;
+    public  function  __construct($view, $h, $articlesModel, $userModel)
     {
-
         $this->view = $view;
         $this->h = $h;
-        $this->model = $model;
-
-
-
+        $this->articlesModel = $articlesModel;
+        $this->userModel = $userModel;
     }
 
     public function loginPage(){
         if($this->login()){
-            $this->h->goUrl('login');
+            $this->view->adminShowAllArticles($this->articlesModel->getAll());
         }
         $this->view->adminLoginPage();
-    }
-    public function adminPage(){
-        $this->view->adminShowAllArticles($this->model->getAll());
     }
 
     public function login() : bool
@@ -47,8 +42,9 @@ class AdminController
 
                 return true;
             }
+            return false;
         }
-        return false;
+        return true;
     }
 
     public function logout()
@@ -59,14 +55,37 @@ class AdminController
 
     public function registrationPage(){
         if(!$this->register()){
-
+            echo 'Ура белиссимо грациес !!!';
         }
         $this->view->registrPageView();
     }
     public function register() : bool
     {
         if(isset($_POST['btn_registr'])){
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $login = $_POST['login'];
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
+            $users = $this->userModel->getAll();
+
+            foreach ($users as $ur){
+                if($ur['login'] == $login || $ur['username'] == $username)
+                    return true;
+            }
+
+            $user['login'] = $login;
+            $user['password'] = $password;
+            $user['avatar'] = null;
+            $user['email'] = $email;
+            $user['emailVerified'] = null;
+            $user['rememberToken']= null;
+            $user['updateAt'] = null;
+            $user['deletedAt'] = null;
+            $user['username'] = $username;
+
+            $this->userModel->addUser($user);
+            return false;
         }
         return true;
     }
@@ -77,7 +96,7 @@ class AdminController
         else{
             $this->addNewArticle();
         }
-        $this->h->goUrl('//normalproject.test/login');
+        $this->h->goUrl('//normalproject.test/admin');
     }
     public function editArticle (){
 
@@ -88,11 +107,11 @@ class AdminController
             'content' => $_REQUEST['content']
         ];
 
-        $dbArticle = $this->model->getById($ar['id']);
+        $dbArticle = $this->articlesModel->getById($ar['id']);
         if(isset($dbArticle) && $dbArticle['image'] != '')
             $ar['image'] = $dbArticle['image'];
 
-        $this->model->updateArticle($ar);
+        $this->articlesModel->updateArticle($ar);
 
     }
     public function addNewArticle(){
@@ -101,17 +120,17 @@ class AdminController
         $newArticle['image'] = '';
         $newArticle['content'] = $_REQUEST['content'];
 
-        $this->model->addArticle($newArticle);
+        $this->articlesModel->addArticle($newArticle);
     }
 
     public function delete($id){
         if($id != 0){
-            $this->model->delete($id);
+            $this->articlesModel->delete($id);
         }
-        $this->h->goUrl('//normalproject.test/login');
+        $this->h->goUrl('//normalproject.test/admin');
     }
     public function edit($id){
-        $article = $this->model->getById($id);
+        $article = $this->articlesModel->getById($id);
         $this->view->editPage($article);
     }
     public function addView(){

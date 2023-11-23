@@ -1,6 +1,8 @@
 <?php
 require_once 'vendor/autoload.php';
 
+session_start();
+
 use NoahBuscher\Macaw\Macaw;
 use Filp\Whoops\Handler;
 use function DI\factory;
@@ -30,7 +32,6 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/registr', ['App\Controllers\AdminController', 'registrationPage']);
     $r->addRoute('POST', '/registr', ['App\Controllers\AdminController', 'registrationPage']);
 
-    $r->addRoute('GET', '/login', ['App\Controllers\AdminController', 'adminPage']);
     $r->addRoute('GET', '/logout', ['App\Controllers\AdminController', 'logout']);
 
     $r->addRoute('POST', '/update', ['App\Controllers\AdminController', 'update']);
