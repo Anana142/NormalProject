@@ -1,5 +1,10 @@
 {% extends "adminBase.twig" %}
 
+{% block user %}
+    {% set nameuser = username %}
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
 
     <div>

@@ -17,7 +17,8 @@ class View
 
     public function showAllArticles($articles)
     {
-        echo $this->twig->render('articlesView.twig', ['articles'=>$articles]);
+        dd($_SESSION['username']);
+        echo $this->twig->render('articlesView.twig', ['articles'=>$articles, 'username' => $_SESSION['username']]);
     }
 
     public function showOneArticle($article){

@@ -35,18 +35,31 @@ class AdminController
         $login = "admin";
         $password = "12345";
 
+        $users = $this->userModel->getAll();
+
         if(!$this->checkAuth()){
-            if (isset($_POST['btn_admin']) && $_POST['login'] == $login && $_POST['password'] == $password){
-
-                $this->signIn('admin', 1);
-
-                return true;
+            //if (isset($_POST['btn_admin']) && $_POST['login'] == $login && $_POST['password'] == $password){
+            if (isset($_POST['btn_admin']) && $this->Authorisation($_POST['login'], $_POST['password'])){
+                foreach ($users as $us)
+                    if($us['login'] == $_POST['login']){
+                        $this->signIn($us['username'], $us['Id']);
+                        return true;
+                    }
             }
             return false;
         }
         return true;
     }
+    public function Authorisation($login, $password) : bool{
+        $users = $this->userModel->getAll();
 
+        foreach ($users as $user){
+            if ($user['login'] == $login  && password_verify($password, $user['password'])){
+                return true;
+            }
+        }
+        return false;
+    }
     public function logout()
     {
         $this->signOut();
