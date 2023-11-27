@@ -21,4 +21,11 @@ trait Auth
         unset($_SESSION['username']);
         unset($_SESSION['userid']);
     }
+
+    public function LogUser(){
+        if(isset($_SESSION['username']))
+            echo($_SESSION['username']);
+        else
+            echo('Не авторизирован!');
+    }
 }

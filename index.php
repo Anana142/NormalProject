@@ -24,13 +24,15 @@ $view = $container->get('View');
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', ['App\Controllers\ArticlesController', 'getAllArticles']);
+    $r->addRoute('POST', '/', ['App\Controllers\ArticlesController', 'getAllArticles']);
+
     $r->addRoute('GET', '/article/{id:\d+}', ['App\Controllers\ArticlesController', 'getOneArticle']);
 
-    $r->addRoute('GET', '/admin', ['App\Controllers\AdminController', 'loginPage']);
-    $r->addRoute('POST', '/admin', ['App\Controllers\AdminController', 'loginPage']);
+    $r->addRoute('GET', '/admin', ['App\Controllers\AdminController', 'articlesPage']);
+    $r->addRoute('POST', '/admin', ['App\Controllers\AdminController', 'articlesPage']);
 
-    $r->addRoute('GET', '/registr', ['App\Controllers\AdminController', 'registrationPage']);
-    $r->addRoute('POST', '/registr', ['App\Controllers\AdminController', 'registrationPage']);
+    $r->addRoute('GET', '/registr', ['App\Controllers\RegistrationController', 'registrationPage']);
+    $r->addRoute('POST', '/registr', ['App\Controllers\RegistrationController', 'registrationPage']);
 
     $r->addRoute('GET', '/logout', ['App\Controllers\AdminController', 'logout']);
 

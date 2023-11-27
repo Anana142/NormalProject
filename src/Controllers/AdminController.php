@@ -21,87 +21,49 @@ class AdminController
         $this->h = $h;
         $this->articlesModel = $articlesModel;
         $this->userModel = $userModel;
-    }
 
-    public function loginPage(){
-        if($this->login()){
-            $this->view->adminShowAllArticles($this->articlesModel->getAll());
+        if(!$this->checkAuth()){
+            $this->login();
+            exit;
         }
-        $this->view->adminLoginPage();
     }
 
-    public function login() : bool
+    public function articlesPage(){
+        $this->view->adminShowAllArticles($this->articlesModel->getAll());
+    }
+
+    public function login()
     {
         $login = "admin";
         $password = "12345";
 
-        $users = $this->userModel->getAll();
-
-        if(!$this->checkAuth()){
-            //if (isset($_POST['btn_admin']) && $_POST['login'] == $login && $_POST['password'] == $password){
-            if (isset($_POST['btn_admin']) && $this->Authorisation($_POST['login'], $_POST['password'])){
+        //$users = $this->userModel->getAll();
+        /*if (isset($_POST['btn_admin']) && $this->Authorisation($_POST['login'], $_POST['password'])){
                 foreach ($users as $us)
                     if($us['login'] == $_POST['login']){
                         $this->signIn($us['username'], $us['Id']);
-                        return true;
-                    }
-            }
-            return false;
-        }
-        return true;
-    }
-    public function Authorisation($login, $password) : bool{
-        $users = $this->userModel->getAll();
+                    }*/
 
-        foreach ($users as $user){
-            if ($user['login'] == $login  && password_verify($password, $user['password'])){
-                return true;
+        if (isset($_POST['btn_admin'])) {
+            if ($_POST['login'] == $login && $_POST['password'] == $password) {
+                $this->signIn("admin", 0);
+                $this->h->goUrl('//normalproject.test/admin');
             }
+            else
+                echo('Неверно!');
+
         }
-        return false;
+        $this->view->adminLoginPage();
     }
+
     public function logout()
     {
         $this->signOut();
         $this->h->goUrl("/admin");
     }
 
-    public function registrationPage(){
-        if(!$this->register()){
-            echo 'Ура белиссимо грациес !!!';
-        }
-        $this->view->registrPageView();
-    }
-    public function register() : bool
-    {
-        if(isset($_POST['btn_registr'])){
-            $username = $_POST['username'];
-            $email = $_POST['email'];
-            $login = $_POST['login'];
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            $users = $this->userModel->getAll();
 
-            foreach ($users as $ur){
-                if($ur['login'] == $login || $ur['username'] == $username)
-                    return true;
-            }
-
-            $user['login'] = $login;
-            $user['password'] = $password;
-            $user['avatar'] = null;
-            $user['email'] = $email;
-            $user['emailVerified'] = null;
-            $user['rememberToken']= null;
-            $user['updateAt'] = null;
-            $user['deletedAt'] = null;
-            $user['username'] = $username;
-
-            $this->userModel->addUser($user);
-            return false;
-        }
-        return true;
-    }
     public function update(){
         if(isset($_POST['id']) && $_POST['id'] != 0){
             $this->editArticle();

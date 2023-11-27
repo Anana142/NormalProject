@@ -13,6 +13,7 @@ use \App\Helper;
 
 use \App\Controllers\ArticlesController;
 use \App\Controllers\AdminController;
+use \App\Controllers\RegistrationController;
 
 return [
     'Connection'=> create(Connection:: class)->constructor(
@@ -51,14 +52,20 @@ return [
     ArticlesController::class => create(ArticlesController::class)->constructor(
         get(\App\Helper::class),
         get('View'),
-        get('ArticlesModel')
+        get('ArticlesModel'),
+        get('UsersModel')
     ),
     AdminController::class => create(AdminController::class)->constructor(
         get('View'),
         get(\App\Helper::class),
         get('ArticlesModel'),
         get('UsersModel')
+    ),
+    RegistrationController::class => create(RegistrationController::class)->constructor(
+        get('View'),
+        get('UsersModel')
     )
+
     ];
 
 
