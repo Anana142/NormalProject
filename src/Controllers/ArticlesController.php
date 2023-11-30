@@ -23,9 +23,8 @@ class ArticlesController
         $this->h = $h;
         $this->userModel = $userModel;
 
-        $this->LogUser();
 
-        if(!$this->checkAuth()){
+        if(!$this->checkAuthUser()){
             $this->login();
             exit;
         }
@@ -101,5 +100,8 @@ class ArticlesController
         $oneArticle = $this->model->getById($id);
         $this->view->showOnearticle($oneArticle);
     }
-
+    public function logout(){
+        $this->signOut();
+        $this->h->goUrl('//normalproject.test');
+    }
 }

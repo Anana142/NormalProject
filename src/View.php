@@ -17,12 +17,12 @@ class View
 
     public function showAllArticles($articles)
     {
-
-        echo $this->twig->render('articlesView.twig', ['articles'=>$articles]);
+        $message = 'dgdsvsdvv';
+        echo $this->twig->render('articlesView.twig', ['articles'=>$articles,'abc'=>'abc', 'username'=>$_SESSION['username'], 'mes'=>$_SESSION['message']]);
     }
 
     public function showOneArticle($article){
-        echo $this->twig->render('oneArticleView.twig', ['article'=>$article]);
+        echo $this->twig->render('oneArticleView.twig', ['article'=>$article, 'username'=>$_SESSION['username'], 'message'=>$_SESSION['message']]);
     }
 
     public function loginPage(){
@@ -33,11 +33,11 @@ class View
     }
 
     public function adminShowAllArticles($articles){
-        echo $this->twig->render('adminArticles.twig', ['articles'=>$articles, 'username' => $_SESSION['username']]);
+        echo $this->twig->render('adminArticles.twig', ['articles'=>$articles, 'username' => $_SESSION['username'], 'message'=>$_SESSION['message']]);
     }
 
     public function editPage($article){
-        echo $this->twig->render('editArticle.twig', ['article' => $article, 'username' => $_SESSION['username']]);
+        echo $this->twig->render('editArticle.twig', ['article' => $article, 'username' => $_SESSION['username'], 'message'=>$_SESSION['message']]);
     }
 
     public function registrPageView(){

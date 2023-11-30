@@ -5,6 +5,11 @@
     {{ parent() }}
 {% endblock %}
 
+{% block message %}
+    {% set textmessage = message %}
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
 <form style="margin: 30px" method="post" action="//normalproject.test/update" onsubmit="confirm('Вы уверены?')">
 <input type="hidden" name="id" value="{{ article['Id'] }}" style="visibility: collapse"/>

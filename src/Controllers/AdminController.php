@@ -22,7 +22,7 @@ class AdminController
         $this->articlesModel = $articlesModel;
         $this->userModel = $userModel;
 
-        if(!$this->checkAuth()){
+        if(!$this->checkAuthAdmin()){
             $this->login();
             exit;
         }
@@ -46,7 +46,7 @@ class AdminController
 
         if (isset($_POST['btn_admin'])) {
             if ($_POST['login'] == $login && $_POST['password'] == $password) {
-                $this->signIn("admin", 0);
+                $this->signInAdmin("admin", 0);
                 $this->h->goUrl('//normalproject.test/admin');
             }
             else
@@ -58,7 +58,7 @@ class AdminController
 
     public function logout()
     {
-        $this->signOut();
+        $this->signOutAdmin();
         $this->h->goUrl("/admin");
     }
 

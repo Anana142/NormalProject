@@ -1,5 +1,10 @@
 {% extends "base.twig" %}
 
+{% block user %}
+    {% set nameuser = username %}
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
 
     {% for article in articles %}
@@ -33,4 +38,10 @@
         </article>
     {% endfor %}
 
+{% endblock %}
+
+{% block messageBox %}
+
+    <h1>{{ mes }}</h1>
+    {{ parent() }}
 {% endblock %}

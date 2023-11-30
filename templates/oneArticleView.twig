@@ -1,5 +1,13 @@
 {% extends "base.twig" %}
 
+{% block user %}
+    {% set nameuser = username %}
+    {{ parent() }}
+{% endblock %}
+{% block message %}
+    {% set textmessage = message %}
+    {{ parent() }}
+{% endblock %}
 {% block content %}
 
 <article class="entry entry-single">

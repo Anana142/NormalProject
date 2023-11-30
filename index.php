@@ -3,16 +3,13 @@ require_once 'vendor/autoload.php';
 
 session_start();
 
+$_SESSION['message'] = 'С днем регистрации';
+
 use NoahBuscher\Macaw\Macaw;
 use Filp\Whoops\Handler;
 use function DI\factory;
 use App;
 
-
-
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
 
 $containerBuilder = new \DI\ContainerBuilder();
 $containerBuilder->useAutowiring(false);
@@ -33,6 +30,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
     $r->addRoute('GET', '/registr', ['App\Controllers\RegistrationController', 'registrationPage']);
     $r->addRoute('POST', '/registr', ['App\Controllers\RegistrationController', 'registrationPage']);
+    $r->addRoute('GET', '/userLogout', ['App\Controllers\ArticlesController', 'logout']);
 
     $r->addRoute('GET', '/logout', ['App\Controllers\AdminController', 'logout']);
 
@@ -40,6 +38,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/edit/{id:\d+}', ['App\Controllers\AdminController', 'edit']);
     $r->addRoute('GET', '/delete/{id:\d+}', ['App\Controllers\AdminController', 'delete']);
     $r->addRoute('GET', '/add', ['App\Controllers\AdminController', 'addView']);
+
+
 });
 
 // Fetch method and URI from somewhere

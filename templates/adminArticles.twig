@@ -5,6 +5,11 @@
     {{ parent() }}
 {% endblock %}
 
+{% block message %}
+    {% set textmessage = message %}
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
 
     <div>
